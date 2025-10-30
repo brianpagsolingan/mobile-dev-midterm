@@ -1,5 +1,6 @@
 package com.example.midterm_brian_pagsolingan;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -19,8 +20,10 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private List<Integer> tableList;          // class-level
-    private ArrayAdapter<Integer> adapter;    // class-level
+    private List<Integer> tableList;
+    private ArrayAdapter<Integer> adapter;
+
+    private List<Integer> historyList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
         EditText intinput = findViewById(R.id.etInput);
         Button btnSubmit = findViewById(R.id.btnSubmit);
         ListView multTable = findViewById(R.id.lvItems);
+        Button btnHistory = findViewById(R.id.historyBtn);
 
         tableList = new ArrayList<>();
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, tableList);
@@ -63,6 +67,8 @@ public class MainActivity extends AppCompatActivity {
                 tableList.add(number * i);
             }
             adapter.notifyDataSetChanged();
+
+            historyList.add(number);
         });
 
         multTable.setOnItemClickListener((parent, view, position, id) -> {
@@ -78,6 +84,12 @@ public class MainActivity extends AppCompatActivity {
                     })
                     .setNegativeButton("No", null)
                     .show();
+        });
+
+        btnHistory.setOnClickListener(v ->{
+            Intent intent = new Intent(this, MainActivity2.class);
+            intent.putIntegerArrayListExtra("history", new ArrayList<>(historyList));
+            startActivity(intent);
         });
     }
 }
